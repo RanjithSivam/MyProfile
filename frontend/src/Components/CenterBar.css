@@ -1,0 +1,19 @@
+.center{
+    flex: 6.5;
+}
+
+.center__container{
+    padding: 20px;
+}
+
+@media only screen and (max-width: 992px){
+    .center{
+        flex: 8.5;
+    }
+}
+
+@media only screen and (max-width: 720px){
+    .center{
+        flex: 12;
+    }
+}

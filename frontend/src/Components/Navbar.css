@@ -1,0 +1,121 @@
+.navbar{
+    height: 50px;
+    width: 100%;
+    background-color: var(--navbar);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar__left{
+    flex: 3;
+}
+
+.navbar__logo{
+    font-size: 24px;
+    margin-left:20px ;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar__center{
+    flex: 5;
+}
+
+.navbar__center .search{
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.search__icon{
+    font-size: 20px !important;
+    margin: 0 10px;
+}
+
+.search__input{
+    width: 70%;
+    border: none;
+    outline: none;
+}
+
+.navbar__right{
+    flex: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+}
+
+.navbar__links{
+    display: flex;
+}
+
+.navbar__link{
+    margin-right: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+}
+
+.navbar__link__count{
+    position: absolute;
+    border-radius: 50%;
+    color: white;
+    width: 15px;
+    height: 15px;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.navbar__profile{
+    position: relative;
+}
+
+.navbar__profile__image{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.navbar__dropdown{
+    position: absolute;
+    background-color: white;
+    white-space: nowrap;
+    left: -20px;
+    top: 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 16px -8px rgba(0,0,0,0.68);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.navbar__dropdown.show{
+    display: flex;
+}
+
+.navbar__dropdown > .dropdown__option{
+    color: black;
+    margin: 5px 3px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 3px;
+    font-size: 14px;
+}
+
