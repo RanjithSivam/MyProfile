@@ -4,6 +4,7 @@ It has little bugs but lets create an ultimate free MyProfile for free.
 
 
 **********Important****************
+
 If you are contributing to the project, things to do:
 
 $ Fork and clone the project.
