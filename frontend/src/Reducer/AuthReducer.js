@@ -1,10 +1,11 @@
-import {SIGN_IN,SIGN_IN_FAILURE,SIGN_IN_SUCCESS,SIGN_OUT} from '../Actions/AuthActions'
+import {SIGN_IN,SIGN_IN_FAILURE,SIGN_IN_SUCCESS,SIGN_OUT,REGISTER_FAILURE,REGISTER,REGISTER_SUCCESS} from '../Actions/AuthActions'
 
 const initialState = {
     loading: false,
     authenticated: false,
     user:{},
-    error:{}
+    error:"",
+    message:""
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,11 +13,17 @@ const reducer = (state = initialState, action) => {
         case SIGN_IN:
             return {...state,loading:true}
         case SIGN_IN_SUCCESS:
-            return {...state,loading:false,authenticated:true,user:action.payload,error:{}}
+            return {...state,loading:false,authenticated:true,user:action.payload,error:""}
         case SIGN_IN_FAILURE:
-            return {...state,loading:false,error:action.payload}
+            return {...state,loading:false,error:action.payload,user:{}}
         case SIGN_OUT:
             return {...state,authenticated:false,user:{}}
+        case REGISTER:
+            return {...state,loading:true,message:"",error:{}}
+        case REGISTER_SUCCESS:
+            return {...state,message:action.payload,error:{},loading:false};
+        case REGISTER_FAILURE:
+            return {...state,error:action.payload,message:"",loading:false}
         default:
             return state;
     }

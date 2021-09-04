@@ -14,6 +14,7 @@ mongoose
 .catch((error) => console.log(error));
 
 app.use(express.json());
+
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);

@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 //css
 import "./Register.css";
 
-// json
-import { users } from "../Json/User";
 import { Link } from "react-router-dom";
+import { authRegister } from "../Actions/AuthActions";
+import { useDispatch, useSelector } from "react-redux";
 
 function Register() {
   const {
@@ -15,8 +15,11 @@ function Register() {
     formState: { errors },
   } = useForm();
 
+  const dispatch = useDispatch();
+  const authStatus = useSelector(state => state.auth);
+
   const onSubmit = (data) => {
-    alert(JSON.stringify(data));
+    dispatch(authRegister(data));
   };
 
   return (
@@ -29,16 +32,13 @@ function Register() {
           </div>
         </div>
         <div className="login__right">
+          {authStatus.message && <p>{authStatus.message}</p>}
+          {authStatus.error && <p>{authStatus.error.message}</p>}
           <form className="login__box" onSubmit={handleSubmit(onSubmit)}>
             <div className="input__container">
               <input
                 {...register("email", {
                   required: "Email id is required.",
-                  validate: {
-                    validEmail: (email) =>
-                      !users.some((user) => user.email === email) ||
-                      "Email is already registered.",
-                  },
                   pattern: {
                     value: /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/,
                     message: "Enter a valid email id."
@@ -79,12 +79,7 @@ function Register() {
                   pattern: {
                     value: /^[a-zA-Z0-9]+$/,
                     message: "Name should only contain alpha numericals",
-                  },
-                  validate: {
-                    validUsername: (name) =>
-                      !users.some((user) => user.login.username === name) ||
-                      "Username unavailable",
-                  },
+                  }
                 })}
                 placeholder="UserName"
                 name="username"

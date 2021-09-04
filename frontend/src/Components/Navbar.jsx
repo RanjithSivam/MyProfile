@@ -1,6 +1,6 @@
 import { GitHub, Instagram, LinkedIn, Search } from '@material-ui/icons'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom'
 import { signOut } from '../Actions/AuthActions';
 
@@ -10,6 +10,7 @@ import './Navbar.css'
 function Navbar() {
 
     const [showDrop, setShowDrop] = useState(false);
+    const auth = useSelector(state => state.auth)
     
     const dispatch = useDispatch();
     const history = useHistory();
@@ -52,7 +53,7 @@ function Navbar() {
                 <div className="navbar__profile">
                     <img src="/assets/myphoto.jpg" alt="profile image" className="navbar__profile__image" onClick={toggleDrop}/>
                     <div className={`navbar__dropdown ${showDrop?'show':''}`}>
-                        <Link to="/dashboard/profile/17" className="dropdown__option">My Profile</Link>
+                        <Link to={`/dashboard/profile/${auth.user._id}`} className="dropdown__option">My Profile</Link>
                         <span className="dropdown__option" onClick={logout}>Log Out</span>
                     </div>
                 </div>

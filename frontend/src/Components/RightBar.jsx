@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getUserById } from '../Services/PostService'
 
 // css
 import './RightBar.css'
@@ -50,61 +52,55 @@ const HomeRightBar = () => {
     )
 }
 
-const ProfileRightBar = ({age,address,maritalStatus}) => {
+const ProfileRightBar = ({userId}) => {
+
+    const [friends, setFriends] = useState([])
+
+    useEffect(()=>{
+        getUser();
+    },[])
+
+    const getUser = async () => {
+        const result = await getUserById(userId);
+        setFriends(result.data.following)
+    }
+    
     return (
         <>
             <h4 className="right__title">User Information</h4>
             <div className="right__infos">
                 <div className="right__info">
                     <span className="info__key">Age:</span>
-                    <span className="info__value">{age}</span>
+                    <span className="info__value">18</span>
                 </div>
                 <div className="right__info">
                     <span className="info__key">From:</span>
-                    <span className="info__value">{address?.city}</span>
+                    <span className="info__value">Pune</span>
                 </div>
                 <div className="right__info">
                     <span className="info__key">RelationShip:</span>    
-                    <span className="info__value">{maritalStatus}</span>
+                    <span className="info__value">Single</span>
                 </div>
             </div>
             <h4 className="right__friends">User Friends</h4>
             <div className="friends__lists">
-                <div className="friends__list">
-                    <img src={`https://picsum.photos/seed/${age*1}/500`} alt="" className="friends__icon"/>
-                    <span className="friends__name">Mikey Jame</span>
+                {friends.map(f=>(
+                    <div className="friends__list">
+                        <img src={`https://picsum.photos/seed/${f}/500`} alt="" className="friends__icon"/>
+                    <span className="friends__name">{f}</span>
                 </div>
-                <div className="friends__list">
-                    <img src={`https://picsum.photos/seed/${age*2}/500`} alt="" className="friends__icon"/>
-                    <span className="friends__name">Mikey Jame</span>
-                </div>
-                <div className="friends__list">
-                    <img src={`https://picsum.photos/seed/${age*3}/500`} alt="" className="friends__icon"/>
-                    <span className="friends__name">Mikey Jame</span>
-                </div>
-                <div className="friends__list">
-                    <img src={`https://picsum.photos/seed/${age*4}/500`} alt="" className="friends__icon"/>
-                    <span className="friends__name">Mikey Jame</span>
-                </div>
-                <div className="friends__list">
-                    <img src={`https://picsum.photos/seed/${age*5}/500`} alt="" className="friends__icon"/>
-                    <span className="friends__name">Mikey Jame</span>
-                </div>
-                <div className="friends__list">
-                    <img src={`https://picsum.photos/seed/${age*6}/500`} alt="" className="friends__icon"/>
-                    <span className="friends__name">Mikey Jame</span>
-                </div>
+                ))}
             </div>
         </>
     )
 }
 
-function RightBar({profile,user}) {
+function RightBar({profile,userId}) {
 
     return (
         <div className="right">
             <div className="right__container">
-                {profile ? <ProfileRightBar {...user} /> : <HomeRightBar />}
+                {profile ? <ProfileRightBar userId={userId}/> : <HomeRightBar />}
             </div>
         </div>
     )

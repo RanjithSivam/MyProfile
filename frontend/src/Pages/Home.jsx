@@ -5,8 +5,11 @@ import Navbar from "../Components/Navbar";
 
 // css
 import './Home.css'
+import { useSelector } from "react-redux";
 
 function Home() {
+    const auth = useSelector(state => state.auth)
+    console.log(auth)
     return (
         <div className="home">
             <Navbar />
