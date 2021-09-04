@@ -24,7 +24,6 @@ function Profile() {
         setUser(result.data);
     }
 
-
     return (
         <>
              <Navbar />
@@ -34,7 +33,7 @@ function Profile() {
                     <div className="profile__top">
                         <div className="profile__cover">
                             <img src={`https://picsum.photos/seed/${id}/500`} alt="" className="profile__cover__icon"/>
-                            <img src={user.avatar} alt="" className="profile__icon"/>
+                            <img src={`https://picsum.photos/seed/${id+"1"}/500`} alt="" className="profile__icon"/>
                         </div>
                         <div className="profile__info">
                             <h4 className="profile__name">{user.username}</h4>
@@ -42,8 +41,8 @@ function Profile() {
                         </div>
                     </div>
                     <div className="profile__bottom">
-                        <CenterBar profile />
-                        <RightBar profile user={user} />
+                        <CenterBar profile userId={id}/>
+                        <RightBar profile userId={id} />
                     </div>
                 </div>
             </div>

@@ -16,9 +16,10 @@ router.post('/register',async (req,res)=>{
         })
         
         await newUser.save();
-        res.status(200).send("Successfull!")
+        res.status(200).json("Successfull!")
     }catch(err){
-        res.status(500).send(err)
+        console.log(err);
+        res.status(500).json(err)
     }
 })
 
@@ -30,9 +31,9 @@ router.post("/login",async (req,res)=>{
         const validPassworrd = await bcrypt.compare(req.body.password,user.password);
         !validPassworrd && res.status(400).send("Incorrect password")
 
-        res.send(user).status(200);
+        res.json(user).status(200);
     }catch(err){
-        res.status(500).send(err)
+        res.status(500).json(err)
     }
 })
 

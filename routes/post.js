@@ -1,21 +1,44 @@
 const router = require('express').Router();
 const Post = require("../models/post");
 const User = require('../models/user');
-// create post
+const multer = require('../multer');
+const Image = require('../models/image');
+const fs = require("fs");
+const path = require("path");
 
-router.post("/",async (req,res)=>{
+// create post
+router.post("/", multer.single('myPost') ,async (req,res)=>{
     try{
-        const newPost = await new Post(req.body);
+        let newImage = null;
+        if(req.file){
+            const img = {
+                data: fs.readFileSync(path.join(__dirname ,"..","/uploads/",  req.file.filename)),
+                contentType: "image/png"
+            }
+    
+           newImage = new Image({
+                image: img
+            })
+
+            await newImage.save();
+    
+        }
+        const newPost = await new Post({
+            userId: JSON.parse(req.body.userId),
+            description: JSON.parse(req.body.description),
+            image: newImage?newImage:null
+        });
+
         await newPost.save();
         res.status(200).json(newPost);
     }catch(err){
-        res.json(err).status(500);
+        console.log(err)
+        res.status(500).json(err);
     }
 
 })
 
 // update
-
 router.put("/:id",async (req,res)=>{
     try{
         const post = await Post.findById(req.params.id);
@@ -31,7 +54,6 @@ router.put("/:id",async (req,res)=>{
 })
 
 // delete
-
 router.delete("/:id",async (req,res)=>{
     try{
         const post = await Post.findById(req.params.id);
@@ -47,10 +69,10 @@ router.delete("/:id",async (req,res)=>{
 })
 
 // like 
-
 router.put("/:id/like",async (req,res)=>{
+    
     try{
-        const post = Post.findById(req.params.id);
+        const post = await Post.findById(req.params.id);
         if(!post.likes.includes(req.body.userId)){
             await post.updateOne({$push:{likes:req.body.userId}});
             res.status(200).json("The post has been liked.")
@@ -64,10 +86,9 @@ router.put("/:id/like",async (req,res)=>{
 })
 
 // get
-
 router.get("/:id",async (req,res)=>{
     try{
-        const post = Post.findById(req.params.id);
+        const post = await Post.find({userId: req.params.id});
         res.status(200).json(post);
     }catch(err){
         res.json(err).status(500);
@@ -76,21 +97,29 @@ router.get("/:id",async (req,res)=>{
 
 
 // timeline
-
-router.post("/timeline/all", async (req,res)=>{
+router.get("/timeline/all/:id", async (req,res)=>{
 
     try{
-        const currUser = await User.findById(req.body.userId);
+        const currUser = await User.findById(req.params.id);
         const userPost = await Post.find({userId: currUser._id});
         const friendPosts = await Promise.all(currUser.following.map((friendId)=>{
-
             return Post.find({userId:friendId})
         }))
 
-        console.log(friendPosts)
+        // console.log(userPost)
         res.json(userPost.concat(...friendPosts))
     }catch(err){
         console.log(err)
+        res.status(500).json(err);
+    }
+})
+
+// get image
+router.get("/postImage/:id",async (req,res)=>{
+    try{
+        const image = await Image.findById(req.params.id);
+        res.status(200).json({content:image._doc.image.contentType,image:image.image.data.toString('base64')})
+    }catch(err){
         res.status(500).json(err);
     }
 })
